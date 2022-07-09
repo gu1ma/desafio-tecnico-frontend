@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { CardsContext } from '../../providers/cards';
-import { Button, Card, CardActions, CardContent, TextField } from '@mui/material';
-import { Container } from './styles';
+import { Button, Card, CardActions, CardContent, TextField, Modal } from '@mui/material';
+import { Container, ContentContainerModal } from './styles';
 import { Delete, ArrowBack, ArrowForward, Edit, Cancel, Save } from '@mui/icons-material';
 
 interface CardData {
@@ -18,67 +18,49 @@ interface CardDataProp {
 const TaskCard = ({ cardData } : CardDataProp) => {
     const { removeCard, updateCard } = useContext(CardsContext)
     const [editMode, setEditMode] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const [title, setTitle] = useState(cardData.title)
     const [description, setDescription] = useState(cardData.description)
 
     return (
-        <Container>
-            <Card variant="outlined" sx={{ maxWidth: 300 }}>
-                <CardContent>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <>
+            <Container>
+                <Card variant="outlined" sx={{ maxWidth: 300 }}>
+                    <CardContent>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <TextField 
+                                fullWidth 
+                                margin='normal' 
+                                label="" 
+                                variant="standard" 
+                                disabled={!editMode} 
+                                value={title} 
+                                onChange={(event) => setTitle(event.target.value)}
+                            />
+                            <Button 
+                                size='medium' 
+                                endIcon={
+                                    !editMode ? 
+                                    <Edit sx={{ color: 'black' }} /> : 
+                                    <Cancel sx={{ color: 'black' }} /> 
+                                } 
+                                onClick={() => setEditMode(!editMode)}
+                            />
+                        </div>
                         <TextField 
-                            fullWidth 
-                            margin='normal' 
+                            fullWidth margin='normal' 
                             label="" 
                             variant="standard" 
                             disabled={!editMode} 
-                            value={title} 
-                            onChange={(event) => setTitle(event.target.value)}
+                            multiline 
+                            value={description} 
+                            onChange={(event) => setDescription(event.target.value)}
                         />
-                        <Button 
-                            size='medium' 
-                            endIcon={
-                                !editMode ? 
-                                <Edit sx={{ color: 'black' }} /> : 
-                                <Cancel sx={{ color: 'black' }} /> 
-                            } 
-                            onClick={() => setEditMode(!editMode)}
-                        />
-                    </div>
-                    <TextField 
-                        fullWidth margin='normal' 
-                        label="" 
-                        variant="standard" 
-                        disabled={!editMode} 
-                        multiline 
-                        value={description} 
-                        onChange={(event) => setDescription(event.target.value)}
-                    />
-                </CardContent>
-                <CardActions style={{ display: 'flex', justifyContent: editMode ? 'center' : 'space-between' }}>
-                    {
-                        !editMode ? (
-                            <>
-                                <Button 
-                                    variant="outlined"
-                                    onClick={() => updateCard(
-                                        {
-                                            id: cardData.id,
-                                            titulo: cardData.title,
-                                            conteudo: cardData.description,
-                                            lista: cardData.list === 'Doing' ? 'ToDo' : cardData.list === 'Done' ? 'Doing' : '' 
-                                        }
-                                    )}
-                                    disabled={cardData.list === 'ToDo'}
-                                    >
-                                        <ArrowBack />
-                                    </Button>
-                                    <Button 
-                                        variant="contained"
-                                        onClick={() => removeCard(cardData.id)}
-                                    >
-                                        <Delete />
-                                    </Button>
+                    </CardContent>
+                    <CardActions style={{ display: 'flex', justifyContent: editMode ? 'center' : 'space-between' }}>
+                        {
+                            !editMode ? (
+                                <>
                                     <Button 
                                         variant="outlined"
                                         onClick={() => updateCard(
@@ -86,36 +68,77 @@ const TaskCard = ({ cardData } : CardDataProp) => {
                                                 id: cardData.id,
                                                 titulo: cardData.title,
                                                 conteudo: cardData.description,
-                                                lista: cardData.list === 'Doing' ? 'Done' : cardData.list === 'ToDo' ? 'Doing' : '' 
+                                                lista: cardData.list === 'Doing' ? 'ToDo' : cardData.list === 'Done' ? 'Doing' : '' 
                                             }
                                         )}
-                                        disabled={cardData.list === 'Done'}
+                                        disabled={cardData.list === 'ToDo'}
                                         >
-                                        <ArrowForward />
-                                    </Button>
-                                </>
-                        ) : (
-                            <Button 
-                                variant="contained"
-                                onClick={() => {
-                                    updateCard(
-                                        {
-                                            id: cardData.id,
-                                            titulo: title,
-                                            conteudo: description,
-                                            lista: cardData.list 
-                                        }
-                                    )
-                                    setEditMode(false)
-                                }}
-                            >
-                                <Save />
-                            </Button>
-                        )
-                    }
-                </CardActions>
-            </Card>
-        </Container>
+                                            <ArrowBack />
+                                        </Button>
+                                        <Button 
+                                            variant="contained"
+                                            onClick={() => setIsModalOpen(true)}
+                                        >
+                                            <Delete />
+                                        </Button>
+                                        <Button 
+                                            variant="outlined"
+                                            onClick={() => updateCard(
+                                                {
+                                                    id: cardData.id,
+                                                    titulo: cardData.title,
+                                                    conteudo: cardData.description,
+                                                    lista: cardData.list === 'Doing' ? 'Done' : cardData.list === 'ToDo' ? 'Doing' : '' 
+                                                }
+                                            )}
+                                            disabled={cardData.list === 'Done'}
+                                            >
+                                            <ArrowForward />
+                                        </Button>
+                                    </>
+                            ) : (
+                                <Button 
+                                    variant="contained"
+                                    onClick={() => {
+                                        updateCard(
+                                            {
+                                                id: cardData.id,
+                                                titulo: title,
+                                                conteudo: description,
+                                                lista: cardData.list 
+                                            }
+                                        )
+                                        setEditMode(false)
+                                    }}
+                                >
+                                    <Save />
+                                </Button>
+                            )
+                        }
+                    </CardActions>
+                </Card>
+            </Container>
+            <Modal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+                >
+                <ContentContainerModal >
+                    <h2 id="parent-modal-title">Tem certeza que deseja deletar esse card?</h2>
+                    <p id="parent-modal-description">
+                        <Button 
+                            variant="outlined" 
+                            sx={{ marginRight: 1 }}
+                            onClick={() => setIsModalOpen(false)}>Cancelar</Button>
+                        <Button 
+                            variant="contained"
+                            onClick={() => { removeCard(cardData.id); setIsModalOpen(false) }}
+                            >Confirmar</Button>
+                    </p>
+                </ContentContainerModal>
+            </Modal>
+        </>
     )
 }
 
