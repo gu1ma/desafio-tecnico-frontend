@@ -7,8 +7,7 @@ import Input from '@mui/material/Input';
 import { InputAdornment, IconButton, Button, Typography } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { ToastContainer, toast, Zoom, Bounce } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css"
+import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -91,7 +90,6 @@ const Login: React.FC = () => {
                         This project was developed for the frontend technical test of Lets Code.
                 </Typography>
             </LoginPresentationContainer>
-            <ToastContainer />
         </Container>
     )
 }

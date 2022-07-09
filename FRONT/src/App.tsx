@@ -9,7 +9,8 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from './providers/auth';
 import { CardsProvider } from './providers/cards';
-
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"
 
 const App = () => {
   const routes = useRoutes([
@@ -26,6 +27,7 @@ const AppWrapper = () => {
       <AuthProvider>
         <CardsProvider>
           <App />
+          <ToastContainer />
         </CardsProvider>
       </AuthProvider>
     </Router>
