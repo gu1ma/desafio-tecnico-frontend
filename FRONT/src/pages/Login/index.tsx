@@ -7,6 +7,8 @@ import Input from '@mui/material/Input';
 import { InputAdornment, IconButton, Button, Typography } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { ToastContainer, toast, Zoom, Bounce } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -23,7 +25,7 @@ const Login: React.FC = () => {
             });
 
             if(!data) {
-                alert('usuário ou senha incorretos!');
+                toast.error('Usuário ou senha incorretos!');
                 return;
             }
     
@@ -31,7 +33,7 @@ const Login: React.FC = () => {
             setUser({ ...user, loggedUser: true })
             navigate('/dash');
         } catch(e: any) {
-            alert('usuário ou senha incorretos!');
+            toast.error('Usuário ou senha incorretos!');
             console.log('e', e.message);
         }
     }
@@ -76,12 +78,20 @@ const Login: React.FC = () => {
             <LoginPresentationContainer>
                 <Typography 
                     variant="h1"
-                    style={{ color: 'white' }}
+                    style={{ color: 'white', fontWeight: 'bold' }}
                     sx={{ paddingLeft: 10, paddingRight: 10 }}
                     >
-                        TO DO List Project
+                        TO DO List Project.
+                </Typography>
+                <Typography 
+                    variant="h6"
+                    style={{ color: '#f5b324' }}
+                    sx={{ paddingLeft: 10, paddingRight: 10, paddingTop: 2 }}
+                    >
+                        This project was developed for the frontend technical test of Lets Code.
                 </Typography>
             </LoginPresentationContainer>
+            <ToastContainer />
         </Container>
     )
 }
