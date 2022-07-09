@@ -1,25 +1,22 @@
-import React from 'react'
-import './App.css';
-import Login from './pages/Login';
-import Dash from './pages/Dash';
+import "./App.css";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-import {
-  BrowserRouter as Router,
-  useRoutes
-} from "react-router-dom";
-import { AuthProvider } from './providers/auth';
-import { CardsProvider } from './providers/cards';
-import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css"
+import Dash from "./pages/Dash";
+import Login from "./pages/Login";
+import { AuthProvider } from "./providers/auth";
+import { CardsProvider } from "./providers/cards";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const routes = useRoutes([
-    { path: '/login', element: <Login /> },
-    { path: '/dash', element: <Dash /> }
+    { path: "/login", element: <Login /> },
+    { path: "/dash", element: <Dash /> },
   ]);
 
   return routes;
-}
+};
 
 const AppWrapper = () => {
   return (
@@ -31,7 +28,7 @@ const AppWrapper = () => {
         </CardsProvider>
       </AuthProvider>
     </Router>
-  )
-}
+  );
+};
 
 export default AppWrapper;
