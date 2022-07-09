@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, LoginContainer } from './styles'
+import { Container, LoginContainer, LoginPresentationContainer, LoginCard } from './styles'
 import { useNavigate } from "react-router-dom";
 import api from '../../services/api';
 import { AuthContext } from '../../providers/auth';
@@ -40,6 +40,7 @@ const Login: React.FC = () => {
     return (
         <Container>
             <LoginContainer>
+                <LoginCard>
                 <Typography variant="h5">Login</Typography>
                 <Input
                     endAdornment={
@@ -65,8 +66,22 @@ const Login: React.FC = () => {
                     }
                     sx={{ marginBottom: 5 }}
                 />
-                <Button variant="contained" onClick={logginRequest} disabled={(username === '' || pass === '')}>Enviar</Button>
+                <Button 
+                    variant="contained" 
+                    onClick={logginRequest} disabled={(username === '' || pass === '')}>
+                        Enviar
+                </Button>
+                </LoginCard>
             </LoginContainer>
+            <LoginPresentationContainer>
+                <Typography 
+                    variant="h1"
+                    style={{ color: 'white' }}
+                    sx={{ paddingLeft: 10, paddingRight: 10 }}
+                    >
+                        TO DO List Project
+                </Typography>
+            </LoginPresentationContainer>
         </Container>
     )
 }
