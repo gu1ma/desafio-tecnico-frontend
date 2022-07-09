@@ -33,7 +33,6 @@ const Login: React.FC = () => {
             navigate('/dash');
         } catch(e: any) {
             toast.error('Usuário ou senha incorretos!');
-            console.log('e', e.message);
         }
     }
 

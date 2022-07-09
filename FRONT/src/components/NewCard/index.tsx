@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent } from '@mui/material';
 import React, { useRef } from 'react';
 import { CardsContext } from '../../providers/cards';
-import { Container, Title, TitleInput, DescriptionInput } from './styles';
+import { Container, TitleInput, DescriptionInput } from './styles';
 
 const NewCard = () => {
     const  { addNewCard }  = React.useContext(CardsContext);

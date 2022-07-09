@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from '../../components/Card';
 import NewCard from '../../components/NewCard';
 import { CardsContext } from '../../providers/cards';
@@ -33,7 +33,7 @@ const Dash: React.FC = () => {
                 </CardContainer>
                 <CardContainer>
                 <Typography variant="h4" padding={2}>Done</Typography>
-                {
+                    {
                         cards.filter(card => card.lista === 'Done').map(card => (
                             <Card key={String(card.id)} cardData={{ id: card.id, title: card.titulo, description: card.conteudo, list: card.lista }} />
                         ))

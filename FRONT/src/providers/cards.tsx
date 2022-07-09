@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
 import { AuthContext } from './auth';
+import { toast } from 'react-toastify';
 
 interface ICardsContextProps {
     children: ReactNode
@@ -39,10 +40,14 @@ export const CardsProvider = ({ children }: ICardsContextProps) => {
 
     const addNewCard = useCallback((data: Omit<ICard, 'id'>) => {
         if(!user.logged) return;
-        api.post('/cards', data).then(responseCards => {
-            console.log('card adicionado')
+        api.post('/cards', data).then(response => {
+            if(!response) {
+                toast.error('Houve algum erro ao adicionar o card!')
+                return
+            }
+            toast.success('Card adicionado!')
         }).catch(() => {
-            alert('Houve algum erro')
+            toast.error('Houve algum erro ao adicionar o card!')
         })
         getAllCards()
     }, [user.logged, getAllCards])
@@ -54,20 +59,23 @@ export const CardsProvider = ({ children }: ICardsContextProps) => {
             titulo: data.titulo,
             conteudo: data.conteudo,
             lista: data.lista
-        }).then(responseCards => {
-            console.log('card atualizado')
+        }).then(_ => {
         }).catch(() => {
-            console.log('Houve algum erro')
+            toast.error('Houve algum erro ao atualizar o card!')
         })
         getAllCards()
     }, [user.logged, getAllCards])
 
     const removeCard = useCallback((id: String) => {
         if(!user.logged) return;
-        api.delete(`/cards/${id}`).then(responseCards => {
-            console.log('card removido')
+        api.delete(`/cards/${id}`).then(response => {
+            if(!response) {
+                toast.error('Houve algum erro na deleção!')
+                return
+            }
+            toast.success('Card removido!')
         }).catch(() => {
-            console.log('houve algum erro na deleção')
+            toast.error('Houve algum erro na deleção!')
         })
         getAllCards()
     }, [user.logged, getAllCards])

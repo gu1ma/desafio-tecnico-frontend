@@ -15,7 +15,10 @@ export const CardContainer = styled.div`
     display: flex;
     flex-direction: column;
     min-width: 300px;
-    height: auto;
+    height: fit-content;
+    max-height: calc(100vh - 30px);
+    overflow: hidden;
+    overflow-y: scroll;
     border-radius: 5px;
     background: #ccc;
 `;
