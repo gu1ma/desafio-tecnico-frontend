@@ -8,7 +8,7 @@
     "@mui/icons-material": "^5.8.0",
     "@mui/material": "^5.8.0",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.2.0",
+    "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.1",
     "@types/node": "^16.11.35",
@@ -29,7 +29,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint --fix --ext .ts,.tsx .",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

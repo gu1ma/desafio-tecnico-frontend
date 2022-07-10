@@ -73,6 +73,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                 disabled={!editMode}
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
+                data-testid="test-title"
               />
               <Button
                 size="medium"
@@ -84,6 +85,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                   )
                 }
                 onClick={() => setEditMode(!editMode)}
+                data-testid="test-edit-button"
               />
             </div>
             <TextField
@@ -95,6 +97,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
               multiline
               value={description}
               onChange={(event) => setDescription(event.target.value)}
+              data-testid="test-description"
             />
           </CardContent>
           <CardActions
@@ -152,6 +155,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                   });
                   setEditMode(false);
                 }}
+                data-testid="test-update-button"
               >
                 <Save />
               </Button>
