@@ -7,7 +7,7 @@ describe("Card component ", () => {
     id: "uuid-asdf-asdf",
     title: "Title",
     description: "Desc",
-    list: "list",
+    list: "ToDo",
   };
 
   it("should render card correctly", () => {
@@ -37,5 +37,37 @@ describe("Card component ", () => {
 
     expect(titleInput.disabled).toBe(false);
     expect(descriptionInput.disabled).toBe(false);
+  });
+
+  it("should test input change", () => {
+    const { getByTestId } = render(<TaskCard cardData={mockCardData} />);
+    const titleContainer: any = getByTestId("test-title");
+    const titleInput: any = titleContainer.firstChild?.firstChild;
+
+    const descriptionContainer: any = getByTestId("test-description");
+    const descriptionInput: any = descriptionContainer.firstChild?.firstChild;
+
+    fireEvent.change(titleInput, { target: { value: "New title" } });
+    fireEvent.change(descriptionInput, {
+      target: { value: "New description" },
+    });
+
+    expect(titleInput.value).toBe("New title");
+    expect(descriptionInput.value).toBe("New description");
+  });
+
+  it("should render modal when click on delete button", () => {
+    const { getByTestId, getByText } = render(
+      <TaskCard cardData={mockCardData} />
+    );
+    const deleteButton = getByTestId("test-delete-button");
+
+    fireEvent.click(deleteButton);
+
+    expect(
+      getByText("Tem certeza que deseja deletar esse card?")
+    ).toBeInTheDocument();
+    expect(getByText("Cancelar")).toBeInTheDocument();
+    expect(getByText("Confirmar")).toBeInTheDocument();
   });
 });

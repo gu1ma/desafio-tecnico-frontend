@@ -125,6 +125,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                 <Button
                   variant="contained"
                   onClick={() => setIsModalOpen(true)}
+                  data-testid="test-delete-button"
                 >
                   <Delete />
                 </Button>
