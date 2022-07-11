@@ -1,5 +1,11 @@
-import { fireEvent, render } from "@testing-library/react";
+import {
+  fireEvent,
+  getAllByTestId,
+  render,
+  screen,
+} from "@testing-library/react";
 
+import { CardsContext } from "../../providers/cards";
 import TaskCard from "./index";
 
 describe("Card component ", () => {
@@ -7,7 +13,37 @@ describe("Card component ", () => {
     id: "uuid-asdf-asdf",
     title: "Title",
     description: "Desc",
-    list: "ToDo",
+    list: "Doing",
+  };
+
+  const renderCardWithMockProvider = (
+    updateCard = jest.fn(),
+    removeCard = jest.fn(),
+    getAllCards = jest.fn(),
+    addNewCard = jest.fn()
+  ) => {
+    const cards = [
+      {
+        ...mockCardData,
+        titulo: mockCardData.title,
+        conteudo: mockCardData.description,
+        lista: mockCardData.list,
+      },
+    ];
+    return render(
+      <CardsContext.Provider
+        // eslint-disable-next-line react/jsx-no-constructed-context-values
+        value={{
+          removeCard,
+          getAllCards,
+          addNewCard,
+          updateCard,
+          cards,
+        }}
+      >
+        <TaskCard cardData={mockCardData} />
+      </CardsContext.Provider>
+    );
   };
 
   it("should render card correctly", () => {
@@ -37,6 +73,11 @@ describe("Card component ", () => {
 
     expect(titleInput.disabled).toBe(false);
     expect(descriptionInput.disabled).toBe(false);
+
+    fireEvent.click(editButton);
+
+    expect(titleInput.disabled).toBe(true);
+    expect(descriptionInput.disabled).toBe(true);
   });
 
   it("should test input change", () => {
@@ -69,5 +110,40 @@ describe("Card component ", () => {
     ).toBeInTheDocument();
     expect(getByText("Cancelar")).toBeInTheDocument();
     expect(getByText("Confirmar")).toBeInTheDocument();
+  });
+
+  it("should call removeCard after modal showed and confirm button clicked", () => {
+    const removeCard = jest.fn();
+    const updateCard = jest.fn();
+    const { getByTestId } = renderCardWithMockProvider(updateCard, removeCard);
+    const deleteButton = getByTestId("test-delete-button");
+    fireEvent.click(deleteButton);
+
+    const modalDeleteButton = getByTestId("test-modal-delete-button");
+    fireEvent.click(modalDeleteButton);
+
+    expect(removeCard).toHaveBeenCalled();
+  });
+
+  it("should call updateCard function when user click on right arrow button", () => {
+    const removeCard = jest.fn();
+    const updateCard = jest.fn();
+    const { getByTestId } = renderCardWithMockProvider(updateCard, removeCard);
+
+    const rightButton = getByTestId("test-right-arrow");
+    fireEvent.click(rightButton);
+
+    expect(updateCard).toHaveBeenCalled();
+  });
+
+  it("should call updateCard function when user click on left arrow button", () => {
+    const removeCard = jest.fn();
+    const updateCard = jest.fn();
+    const { getByTestId } = renderCardWithMockProvider(updateCard, removeCard);
+
+    const leftButton = getByTestId("test-left-arrow");
+    fireEvent.click(leftButton);
+
+    expect(updateCard).toHaveBeenCalled();
   });
 });

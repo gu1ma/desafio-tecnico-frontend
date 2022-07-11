@@ -119,6 +119,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                     })
                   }
                   disabled={cardData.list === "ToDo"}
+                  data-testid="test-left-arrow"
                 >
                   <ArrowBack />
                 </Button>
@@ -140,6 +141,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                     })
                   }
                   disabled={cardData.list === "Done"}
+                  data-testid="test-right-arrow"
                 >
                   <ArrowForward />
                 </Button>
@@ -188,6 +190,7 @@ const TaskCard = ({ cardData }: ICardDataProp) => {
                 removeCard(cardData.id);
                 setIsModalOpen(false);
               }}
+              data-testid="test-modal-delete-button"
             >
               Confirmar
             </Button>
