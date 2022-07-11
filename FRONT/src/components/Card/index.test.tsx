@@ -1,9 +1,4 @@
-import {
-  fireEvent,
-  getAllByTestId,
-  render,
-  screen,
-} from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 
 import { CardsContext } from "../../providers/cards";
 import TaskCard from "./index";
@@ -15,19 +10,19 @@ describe("Card component ", () => {
     description: "Desc",
     list: "Doing",
   };
-
   const renderCardWithMockProvider = (
     updateCard = jest.fn(),
     removeCard = jest.fn(),
-    getAllCards = jest.fn(),
-    addNewCard = jest.fn()
+    listType = "Doing"
   ) => {
+    const getAllCards = jest.fn();
+    const addNewCard = jest.fn();
     const cards = [
       {
         ...mockCardData,
         titulo: mockCardData.title,
         conteudo: mockCardData.description,
-        lista: mockCardData.list,
+        lista: listType,
       },
     ];
     return render(
@@ -41,7 +36,7 @@ describe("Card component ", () => {
           cards,
         }}
       >
-        <TaskCard cardData={mockCardData} />
+        <TaskCard cardData={{ ...mockCardData, list: listType }} />
       </CardsContext.Provider>
     );
   };
@@ -61,7 +56,7 @@ describe("Card component ", () => {
   });
 
   it("should enable/disable edit mode", () => {
-    const { getByTestId } = render(<TaskCard cardData={mockCardData} />);
+    const { getByTestId } = render(<TaskCard cardData={{ ...mockCardData }} />);
     const titleContainer: any = getByTestId("test-title");
     const titleInput: any = titleContainer.firstChild?.firstChild;
 
@@ -125,10 +120,14 @@ describe("Card component ", () => {
     expect(removeCard).toHaveBeenCalled();
   });
 
-  it("should call updateCard function when user click on right arrow button", () => {
+  it("should call updateCard function when user click on right arrow button with 'Doing' listType", () => {
     const removeCard = jest.fn();
     const updateCard = jest.fn();
-    const { getByTestId } = renderCardWithMockProvider(updateCard, removeCard);
+    const { getByTestId } = renderCardWithMockProvider(
+      updateCard,
+      removeCard,
+      "Doing"
+    );
 
     const rightButton = getByTestId("test-right-arrow");
     fireEvent.click(rightButton);
@@ -136,13 +135,65 @@ describe("Card component ", () => {
     expect(updateCard).toHaveBeenCalled();
   });
 
-  it("should call updateCard function when user click on left arrow button", () => {
+  it("should call updateCard function when user click on right arrow button with 'ToDo' listType", () => {
     const removeCard = jest.fn();
     const updateCard = jest.fn();
-    const { getByTestId } = renderCardWithMockProvider(updateCard, removeCard);
+    const { getByTestId } = renderCardWithMockProvider(
+      updateCard,
+      removeCard,
+      "ToDo"
+    );
+
+    const rightButton = getByTestId("test-right-arrow");
+    fireEvent.click(rightButton);
+
+    expect(updateCard).toHaveBeenCalled();
+  });
+
+  it("should call updateCard function when user click on left arrow button 'Done' listType", () => {
+    const removeCard = jest.fn();
+    const updateCard = jest.fn();
+    const { getByTestId } = renderCardWithMockProvider(
+      updateCard,
+      removeCard,
+      "Done"
+    );
 
     const leftButton = getByTestId("test-left-arrow");
     fireEvent.click(leftButton);
+
+    expect(updateCard).toHaveBeenCalled();
+  });
+
+  it("should call updateCard function when user click on left arrow button with 'Doing' listType", () => {
+    const removeCard = jest.fn();
+    const updateCard = jest.fn();
+    const { getByTestId } = renderCardWithMockProvider(
+      updateCard,
+      removeCard,
+      "Doing"
+    );
+
+    const leftButton = getByTestId("test-left-arrow");
+    fireEvent.click(leftButton);
+
+    expect(updateCard).toHaveBeenCalled();
+  });
+
+  it("should call updateCard function when user edit the card", () => {
+    const removeCard = jest.fn();
+    const updateCard = jest.fn();
+    const { getByTestId } = renderCardWithMockProvider(
+      updateCard,
+      removeCard,
+      "ToDo"
+    );
+
+    const editButton = getByTestId("test-edit-button");
+    fireEvent.click(editButton);
+
+    const updateButton = getByTestId("test-update-button");
+    fireEvent.click(updateButton);
 
     expect(updateCard).toHaveBeenCalled();
   });
