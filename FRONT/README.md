@@ -5,7 +5,7 @@
 `yarn` <br>
 `yarn start`<br><br>
 
-### Certifique-se que o backend que serve a aplicação esteja rodando [backend](https://github.com/gu1ma/desafio-tecnico-frontend/tree/main/BACK)
+### Certifique-se que o [backend](https://github.com/gu1ma/desafio-tecnico-frontend/tree/main/BACK) que serve a aplicação esteja rodando
 <br>
 
 ### Rode os testes unitários com o seguinte comando
